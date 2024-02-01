@@ -1,4 +1,5 @@
-# SPDX-License-Identifier: Apache-2.0
+# SPDX Licence-Identifier: Apache-2.0
+# SPDX-FileCopyrightText: 2024 Laurent Fazio <laurent.fazio@gmail.com>
 
 TOP := $(shell pwd)
 CC := gcc
