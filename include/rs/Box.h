@@ -6,19 +6,19 @@
 
 typedef struct Box_s Box_t;
 
-Box_t * Box_create(Ref(ref), usize size, bool allocate);
+#define Box(T) Box_t *
 
-void Box_free(void *box);
+Box(T) Box_create(Ref(ref), usize size, bool allocate);
 
-void Box_drop(Box_t *box);
+void Box_free(Ref(box));
 
-size_t Box_sizeof(Box_t *box);
+void Box_drop(Box(T) box);
 
-void * Box_ref(Box_t *box);
+size_t Box_sizeof(Box(T) box);
 
-int Box_display(Box_t *box);
+void * Box_ref(Box(T) box);
+
+int Box_display(Box(T) box);
 
 #define Box_new(ref) Box_create((ref), sizeof(*(ref), false))
 #define Box_downcast(b, type) Cast(type *, Box_ref(b))
-
-#define Box(T) Box_t *

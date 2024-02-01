@@ -12,23 +12,25 @@ typedef enum {
 
 typedef struct Option_s Option_t;
 
-Option_t * Option_new(void);
+#define Option(T) Option_t *
 
-void * Option_drop(Option_t *o);
+Option(T) Option_new(void);
 
-OptionKind_t Option_kind(Option_t *o);
+void * Option_drop(Option(T) o);
 
-bool Option_is_none(Option_t *o);
+OptionKind_t Option_kind(Option(T) o);
 
-bool Option_is_some(Option_t *o);
+bool Option_is_none(Option(T) o);
 
-Option_t * Option_some(Option_t *o, Ref(value));
+bool Option_is_some(Option(T) o);
 
-Option_t * Option_none(Option_t *o);
+Option(T) Option_some(Option(T) o, Ref(value));
 
-void * Option_unwrap(Option_t *o);
+Option(T) Option_none(Option(T) o);
 
-int Option_display(Option_t *o);
+void * Option_unwrap(Option(T) o);
+
+int Option_display(Option(T) o);
 
 #define OPTION_MATCH(o) switch (Option_kind(o))
 #define OPTION_SOME case OPTIONKIND_SOME
@@ -37,4 +39,3 @@ int Option_display(Option_t *o);
 
 #define Some(o, value) Option_some((o), Cast(void *, (value)))
 #define None(o) Option_none(o)
-#define Option(T) Option_t *

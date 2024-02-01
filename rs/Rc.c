@@ -76,7 +76,7 @@ void * Rc_ref(Rc_t *rc)
 	return rc->ref;
 }
 
-size_t Rc_strong_count(Rc_t *rc)
+usize Rc_strong_count(Rc_t *rc)
 {
 	if (!rc)
 		return 0;
