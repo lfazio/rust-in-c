@@ -17,6 +17,9 @@ typedef struct Result_s Result_t;
 
 Result(T1, T2) Result_new(void);
 
+// Trait: std/Default
+void * Result_default(Ref(self));
+
 void * Result_drop(Result(T1, T2) r);
 
 Result(T1, T2) Result_err(Result(T1, T2) r, Ref(err));
@@ -33,11 +36,12 @@ void * Result_unwrap(Result(T1, T2) r);
 
 void * Result_unwrap_err(Result(T1, T2) r);
 
-int Result_display(Result(T1, T2) r);
+// Trait: std/fmt/Display
+Result(usize, int) Result_display(Result(T1, T2) r);
 
 /* Set Ok value_handle */
-#define Ok(r, value) Result_ok(r, value)
-#define Err(r, value) Result_err(r, value)
+#define Ok(r, value) Result_ok(r, Deref(value))
+#define Err(r, value) Result_err(r, Deref(value))
 
 #define RESULT_MATCH(r) switch (Result_kind(r))
 #define RESULT_OK case RESULTKIND_OK

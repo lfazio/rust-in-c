@@ -55,7 +55,7 @@ int main(void) {
 		v = Cast(usize *, Box_ref(Rc_ref(rc)));
 
 		print("<I> rc=");
-		Rc_display(rc);
+		Result_drop(fmt_display(Rc, rc));
 		println("");
 		info("sum(100)=%lu", *v);
 		Rc_unlock(rc);

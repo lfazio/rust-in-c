@@ -22,7 +22,53 @@ struct Result_s {
 			Ref(value);
 		} err;
 	};
+
+	impl(Default);
+	impl(Display);
 };
+
+static Result_t * _Result_fmt(Ref(self))
+{
+	let(count, int) = 0;
+	let(r, Result_t *) = Cast(Result_t *, self);
+	
+	RESULT_MATCH(r) {
+	RESULT_OK:
+		count += print("Result<Ok(");
+		count += print("%p", Result_unwrap(r));
+		count += print(")>");
+		return Ok(Result_new(), count);
+	
+	RESULT_ERR:
+		count += print("Result<Err(");
+		count += print("%p", Result_unwrap_err(r));
+		count += print(")>");
+		return Ok(Result_new(), count);
+	
+	RESULT_UNREACHABLE:
+		unreachable();
+	}
+}
+
+static Result_t * _Result_default(Result_t *r)
+{
+	if (!r && r->type != TYPE_KIND_RESULT)
+		return NULL;
+
+	r->kind = RESULTKIND_INVAL;
+	r->instance(Default).Default = Result_default;
+	r->instance(Display).fmt = _Result_fmt;
+
+	return r;
+}
+
+void * Result_default(Ref(self))
+{
+	if (!self)
+		return NULL;
+
+	return _Result_default(Cast(Result_t *, self));
+}
 
 Result_t * Result_new(void)
 {
@@ -32,7 +78,7 @@ Result_t * Result_new(void)
 	if (r)
 		r->type = TYPE_KIND_RESULT;
 
-	return r;
+	return _Result_default(r);
 }
 
 void * Result_drop(Result_t *r)
@@ -128,29 +174,15 @@ void * Result_unwrap_err(Result_t *r)
 	return NULL;
 }
 
-int Result_display(Result_t *r)
+Result(usize, int) Result_display(Result_t *r)
 {
-	let(count, int) = 0;
+	if (!r && r->type != TYPE_KIND_RESULT)
+		return Err(Result_new(), -EINVAL);
 
 	if (Result_kind(r) == RESULTKIND_INVAL) {
 		print("Result<invalid>");
-		return -EINVAL;
+		return Err(Result_new(), -EINVAL);
 	}
 
-	RESULT_MATCH(r) {
-	RESULT_OK:
-		count += print("Result<Ok(");
-		count += print("%p", Result_unwrap(r));
-		count += print(")>");
-		return count;
-	
-	RESULT_ERR:
-		count += print("Result<Err(");
-		count += print("%p", Result_unwrap_err(r));
-		count += print(")>");
-		return count;
-	
-	RESULT_UNREACHABLE:
-		unreachable();
-	}
+	return r->instance(Display).fmt(Deref(r));
 }

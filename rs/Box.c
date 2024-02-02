@@ -15,7 +15,19 @@ struct Box_s {
 	Ref(ref);
 	usize size;
 	bool allocated;
+
+	impl(Display);
 };
+
+static Result(usize, int) _Box_fmt(Ref(self))
+{
+	let(box, Box_t *) = Cast(Box_t *, self);
+
+	return Ok(Result_new(), print("Box<%p, %zu, %s>",
+				      Box_ref(box),
+				      Box_sizeof(box),
+				      box->allocated ? "true" : "false"));
+}
 
 Box_t * Box_create(Ref(ref), usize size, bool allocate)
 {
@@ -39,6 +51,7 @@ Box_t * Box_create(Ref(ref), usize size, bool allocate)
 	}
 
 	b->size = size;
+	b->instance(Display).fmt = _Box_fmt;
 
 	return b;
 }
@@ -74,12 +87,12 @@ void * Box_ref(Box_t *box)
 	return box->ref;
 }
 
-int Box_display(Box_t *box)
+Result(usize, int) Box_display(Box_t *box)
 {
 	if (!box) {
 		print("Box<invalid>");
-		return -EINVAL;
+		return Err(Result_new(), -EINVAL);
 	}
 
-	return print("Box<%p, %zu, %s>", Box_ref(box), Box_sizeof(box), box->allocated ? "true" : "false");
+	return box->instance(Display).fmt(box);
 }

@@ -16,7 +16,7 @@ typedef enum {
 
 #define Cast(type, ptr) ((type)(ptr))
 #define Ref(ptr) void *ptr
-#define Deref(value) Cast(void *, value)
+#define Deref(value) Cast(void *, Cast(uintptr_t, value))
 
 typedef uint8_t u8;
 typedef uint16_t u16;
@@ -34,3 +34,7 @@ typedef size_t usize;
 typedef ssize_t isize;
 
 #define Nil &OptionNil
+
+#define container_of(ptr, type, member) ({ \
+                const typeof( ((type *)0)->member ) *__mptr = (ptr); \
+                (type *)( (char *)__mptr - offsetof(type,member) ); })

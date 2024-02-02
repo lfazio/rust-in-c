@@ -17,13 +17,54 @@ struct Option_s {
 	struct {
 		Ref(value);
 	} some;
+
+	impl(Default);
+	impl(Display);
 };
 
-extern const Option_t OptionNil;
 const Option_t OptionNil = {
 	.type = TYPE_KIND_OPTION,
 	.kind = OPTIONKIND_NONE
 };
+
+static Result(usize, int) _Option_fmt(Ref(self))
+{
+	let(count, int) = 0;
+	let(o, Option_t *) = Cast(Option_t *, self);
+
+	if (Option_kind(o) == OPTIONKIND_INVAL) {
+		print("Option<invalid>");
+		return Err(Result_new(), -EINVAL);
+	}
+
+	OPTION_MATCH(o) {
+	OPTION_SOME:
+		count += print("Option<Some(");
+		count += print("%p", Option_unwrap(o));
+		count += print(")>");
+		return Ok(Result_new(), count);
+
+	OPTION_NONE:
+		return Ok(Result_new(), print("Option<None>"));
+
+	OPTION_UNREACHABLE:
+		unreachable();
+	}
+
+	return Err(Result_new(), -EINVAL);
+}
+
+static Option_t *_Option_default(Option_t *o)
+{
+	if (!o && o->type != TYPE_KIND_OPTION)
+		return NULL;
+
+	o->kind = OPTIONKIND_NONE;
+	o->instance(Default).Default = Option_default;
+	o->instance(Display).fmt = _Option_fmt;
+
+	return Deref(o);
+}
 
 Option_t * Option_new(void)
 {
@@ -33,8 +74,17 @@ Option_t * Option_new(void)
 	if (o)
 		o->type = TYPE_KIND_OPTION;
 
-	return o;
+	return _Option_default(o);
 }
+
+void * Option_default(Ref(self))
+{
+	if (!self)
+		return NULL;
+
+	return Deref(_Option_default(Cast(Option_t *, self)));
+}
+
 
 void * Option_drop(Option_t *o)
 {
@@ -113,26 +163,15 @@ void * Option_unwrap(Option_t *o)
 	return o->some.value;
 }
 
-int Option_display(Option_t *o)
+Result(T1, T2) Option_display(Option_t *o)
 {
-	let(count, int) = 0;
-
+	if (!o && o->type != TYPE_KIND_OPTION)
+		return Err(Result_new(), -EINVAL);
+	
 	if (Option_kind(o) == OPTIONKIND_INVAL) {
 		print("Option<invalid>");
-		return -EINVAL;
+		return Err(Result_new(), -EINVAL);
 	}
 
-	OPTION_MATCH(o) {
-	OPTION_SOME:
-		count += print("Option<Some(");
-		count += print("%p", Option_unwrap(o));
-		count += print(")>");
-		return count;
-
-	OPTION_NONE:
-		return print("Option<None>");
-
-	OPTION_UNREACHABLE:
-		unreachable();
-	}
+	return o->instance(Display).fmt(Deref(o));
 }

@@ -48,7 +48,7 @@ int main(void) {
 		usize *v = Cast(usize *, Box_ref(b));
 
 		print("<I> b=");
-		Box_display(b);
+		Result_drop(fmt_display(Box, b));
 		println("");
 		info("sum(100)=%lu", *v);
 		Box_drop(b);

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <rs/Types.h>
+#include <rs/Result.h>
 
 typedef struct Box_s Box_t;
 
@@ -19,7 +20,7 @@ size_t Box_sizeof(Box(T) box);
 
 void * Box_ref(Box(T) box);
 
-int Box_display(Box(T) box);
+Result(usize, int) Box_display(Box(T) box);
 
 #define Box_new(ref) Box_create((ref), sizeof(*(ref), false))
 #define Box_downcast(b, type) Cast(type *, Box_ref(b))

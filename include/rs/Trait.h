@@ -8,4 +8,3 @@
 #define impl(t) trait(t) instance(t)
 
 #define instance(t) trait_## t ##_ops
-

@@ -19,7 +19,33 @@ struct Rc_s {
 
 	Ref(ref);
 	void (*free)(void *ref);
+
+	impl(Display);
 };
+
+static Result(usize, int) _Rc_fmt(Ref(self))
+{
+	let(rc, Rc_t *) = Cast(Rc_t *, self);
+
+	return Ok(Result_new(), print("Rc<%zu, %p, %s>",
+				Rc_strong_count(rc),
+				Rc_ref(rc),
+				Rc_lock(rc) ? "locked" : "unlocked"));
+}
+
+static Rc_t * _Rc_default(Rc_t *rc, Ref(ptr), void (*free)(Ref(ref)))
+{
+	if (!rc)
+		return NULL;
+
+	atomic_init(&rc->refc, 1);
+	atomic_init(&rc->lock, 0);
+	rc->instance(Display).fmt = _Rc_fmt;
+	rc->free = free;
+	rc->ref = ptr;
+
+	return rc;
+}
 
 Rc_t * Rc_create(Ref(ptr), void (*free)(Ref(ref)))
 {
@@ -28,13 +54,8 @@ Rc_t * Rc_create(Ref(ptr), void (*free)(Ref(ref)))
 	rc = mm_calloc(1, sizeof(struct Rc_s));
 	if (!rc)
 		return NULL;
-	
-	atomic_init(&rc->refc, 1);
-	atomic_init(&rc->lock, 0);
-	rc->ref = ptr;
-	rc->free = free;
 
-	return rc;
+	return _Rc_default(rc, ptr, free);
 }
 
 Rc_t * Rc_clone(Rc_t *rc)
@@ -98,12 +119,12 @@ void Rc_drop(Rc_t *rc)
 	}
 }
 
-int Rc_display(Rc_t *rc)
+Result(usize, int) Rc_display(Rc_t *rc)
 {
 	if (!rc) {
 		print("Rc<invalid>");
-		return -EINVAL;
+		return Err(Result_new(), -EINVAL);
 	}
 
-	return print("Rc<%zu, %p, %s>", Rc_strong_count(rc), Rc_ref(rc), Rc_lock(rc) ? "locked" : "unlocked");
+	return rc->instance(Display).fmt(Deref(rc));
 }

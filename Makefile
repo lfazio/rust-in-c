@@ -19,16 +19,14 @@ IFLAGS += -Iinclude
 CFLAGS := -Wall -Wextra 
 CFLAGS += -std=c11 $(PRINT_FLAGS)
 
-.PHONY: default
-default: all
+.PHONY: all
+all::
 
 include BUILD.mk
 
-.PHONY: all
-all: $(addprefix $(O)/,$(addsuffix .elf,$(bin-y)))
-
 $(O)/%.elf: %-obj %-lib
 	@echo LD $(notdir $@)
+	@mkdir -p $(dir $@)
 	$(Q)$(CC) -g -o $@ $(addprefix $(O)/,$($*-obj-y)) -L$(O) $(addprefix -l,$($*-lib-y))
 	@echo SIZE $(notdir $@)
 	$(SIZE) $@

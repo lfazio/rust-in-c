@@ -38,14 +38,14 @@ int main(void) {
 	RESULT_MATCH(r) {
 	RESULT_ERR:
 		print("<I> r=");
-		Result_display(r);
+		Result_drop(fmt_display(Result, r));
 		println("");
 		info("sum(0)=0");
 		break;
 
 	RESULT_OK:
 		print("<I> r=");
-		Result_display(r);
+		Result_drop(fmt_display(Result, r));
 		println("");
 		info("sum(100)=%lu", Cast(usize, Result_unwrap(r)));
 		break;

@@ -17,9 +17,15 @@ typedef struct Option_s Option_t;
 
 Option(T) Option_new(void);
 
+// Trait: std/Default
+void * Option_default(Ref(self));
+
 void * Option_drop(Option(T) o);
 
 OptionKind_t Option_kind(Option(T) o);
+
+// Trait: std/fmt/Display
+Result(T1, T2) Option_display(Option(T) o);
 
 bool Option_is_none(Option(T) o);
 
@@ -30,8 +36,6 @@ Option(T) Option_some(Option(T) o, Ref(value));
 Option(T) Option_none(Option(T) o);
 
 void * Option_unwrap(Option(T) o);
-
-int Option_display(Option(T) o);
 
 #define OPTION_MATCH(o) switch (Option_kind(o))
 #define OPTION_SOME case OPTIONKIND_SOME

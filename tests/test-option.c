@@ -4,6 +4,7 @@
 #include <al/print.h>
 
 #include <rs/Rust.h>
+#include <rs/std/fmt/Display.h>
 
 Option(usize) sum(usize n)
 {
@@ -36,14 +37,14 @@ int main(void) {
 	OPTION_MATCH(o) {
 	OPTION_NONE:
 		print("<I> o=");
-		Option_display(o);
+		Result_drop(fmt_display(Option, o));
 		println("");
 		info("sum(0)=0");
 		break;
 
 	OPTION_SOME:
 		print("<I> o=");
-		Option_display(o);
+		Result_drop(fmt_display(Option, o));
 		println("");
 		info("sum(100)=%lu", Cast(usize, Option_unwrap(o)));
 		break;

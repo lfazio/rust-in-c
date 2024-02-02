@@ -4,6 +4,7 @@
 #pragma once
 
 #include <rs/Types.h>
+#include <rs/Result.h>
 
 typedef struct Rc_s Rc_t;
 
@@ -23,7 +24,8 @@ usize Rc_strong_count(Rc(T) rc);
 
 void Rc_drop(Rc(T) rc);
 
-int Rc_display(Rc(T) rc);
+// Trait: std/fmt/Display
+Result(usize, int) Rc_display(Rc(T) rc);
 
 #define Rc_new(ptr) Rc_create((ptr), mm_free)
 #define Rc_downcast(b, type) Cast(type *, Rc_ref(b))

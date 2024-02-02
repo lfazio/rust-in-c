@@ -1,9 +1,12 @@
 // SPDX Licence-Identifier: Apache-2.0
 // SPDX-FileCopyrightText: 2024 Laurent Fazio <laurent.fazio@gmail.com>
 
+#include <al/mm.h>
 #include <al/print.h>
 
 #include <rs/Rust.h>
+#include <rs/std/Default.h>
+#include <rs/std/fmt/Display.h>
 
 trait(myapi) {
 	Option(usize) (*sum)(void *self, usize n);
@@ -13,16 +16,15 @@ struct mystruct {
 	usize n;
 
 	impl(myapi);
+	impl(Default);
 };
 
 struct mystruct2 {
 	usize n;
 
 	impl(myapi);
+	impl(Default);
 };
-
-#define mystruct_new(v, ...) { .n = v, .instance(myapi) = __VA_ARGS__, }
-#define mystruct2_new(v, ...) { .n = v, .instance(myapi) = __VA_ARGS__, }
 
 static Option(usize) _sum(void *self, usize n)
 {
@@ -70,32 +72,70 @@ static Option(usize) _sum_sqr(void *self, usize n)
 	}
 }
 
+void *_mystruct_default(Ref(self))
+{	
+	struct mystruct *s = Cast(struct mystruct *, self);
+
+	if (!s)
+		return NULL;
+
+	s->n = 100;
+	s->instance(myapi).sum = _sum;
+	s->instance(Default).Default = _mystruct_default;
+
+	return self;
+}
+
+void *_mystruct_new(void)
+{	
+	struct mystruct *s = mm_malloc(sizeof(struct mystruct));
+	return _mystruct_default(s);
+}
+
+void *_mystruct2_default(Ref(self))
+{	
+	struct mystruct *s = Cast(struct mystruct *, self);
+
+	if (!s)
+		return NULL;
+
+	s->n = 100;
+	s->instance(myapi).sum = _sum_sqr;
+	s->instance(Default).Default = _mystruct2_default;
+
+	return self;
+}
+
+void *_mystruct2_new(void)
+{	
+	struct mystruct *s = mm_malloc(sizeof(struct mystruct));
+	return _mystruct2_default(s);
+}
+
 int main(void)
 {
 	Option(usize) o;
-	struct mystruct s = mystruct_new(100, { .sum = _sum, });
-
-	struct mystruct2 s2 = mystruct2_new(100, { .sum = _sum_sqr, });
-
+	struct mystruct *s = Cast(struct mystruct *, _mystruct_new());
+	struct mystruct2 *s2 = Cast(struct mystruct2 *, _mystruct2_new());
 
 	info("Rust-like Trait example");
 	info("========================");
 	info("");
 
-	o = s.instance(myapi).sum(&s, s.n);
+	o = s->instance(myapi).sum(s, s->n);
 	OPTION_MATCH(o) {
 	OPTION_NONE:
 		print("<I> o=");
-		Option_display(o);
+		Result_drop(fmt_display(Option, o));
 		println("");
 		info("sum(0)=0");
 		break;
 
 	OPTION_SOME:
 		print("<I> o=");
-		Option_display(o);
+		Result_drop(fmt_display(Option, o));
 		println("");
-		info("sum(%lu)=%lu", s.n, Cast(usize, Option_unwrap(o)));
+		info("sum(%lu)=%lu", s->n, Cast(usize, Option_unwrap(o)));
 		break;
 
 	OPTION_UNREACHABLE:
@@ -103,21 +143,22 @@ int main(void)
 	}
 
 	Option_drop(o);
+	mm_free(s);
 
-	o = s2.instance(myapi).sum(&s2, s2.n);
+	o = s2->instance(myapi).sum(s2, s2->n);
 	OPTION_MATCH(o) {
 	OPTION_NONE:
 		print("<I> o=");
-		Option_display(o);
+		Result_drop(fmt_display(Option, o));
 		println("");
 		info("sum(0)=0");
 		break;
 
 	OPTION_SOME:
 		print("<I> o=");
-		Option_display(o);
+		Result_drop(fmt_display(Option, o));
 		println("");
-		info("sum(%lu)=%lu", s2.n, Cast(usize, Option_unwrap(o)));
+		info("sum(%lu)=%lu", s2->n, Cast(usize, Option_unwrap(o)));
 		break;
 
 	OPTION_UNREACHABLE:
@@ -125,7 +166,7 @@ int main(void)
 	}
 
 	Option_drop(o);
-
+	mm_free(s2);
 
 	return 0;
 }
