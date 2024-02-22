@@ -95,3 +95,22 @@ test-trait.distclean: test-trait.clean $(addprefix lib,$(addsuffix .clean,$(test
 	$(Q)$(RM) -f $(O)/$(test-trait-elf-y)).elf
 
 all:: $(O)/$(test-trait-elf-y)
+
+###
+# test-vec
+###
+test-vec-elf-y += test-vec.elf
+test-vec-obj-y += tests/test-vec.o
+test-vec-lib-y += rs
+
+.PHONY: test-vec.clean
+test-vec.clean: $(addprefix lib,$(addsuffix .clean,$(test-vec-lib-y)))
+	@echo CLEAN $(basename $@)
+	$(Q)$(RM) -f $(addprefix $(O)/,$($(basename $@)-obj-y))
+
+.PHONY: test-vec.distclean
+test-vec.distclean: test-trait.clean $(addprefix lib,$(addsuffix .clean,$(test-vec-lib-y)))
+	@echo CLEAN $(basename $@)
+	$(Q)$(RM) -f $(O)/$(test-vec-elf-y)).elf
+
+all:: $(O)/$(test-vec-elf-y)
