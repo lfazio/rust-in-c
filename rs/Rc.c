@@ -112,6 +112,8 @@ void Rc_drop(Rc_t *rc)
 		return;
 
 	if (atomic_fetch_sub(&rc->refc, 1) - 1 == 0) {
+		Rc_lock(rc);
+
 		if (rc->free)
 			rc->free(rc->ref);
 
