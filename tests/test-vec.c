@@ -49,50 +49,29 @@ int main(void) {
 
 	info("  * Iterating over Vec...");
 	iter = VecIter_To(VecIter_From(Vec_IntoIterator(v), 20), 90);
-	do {
-		o = VecIter_next(iter);
-		if (Option_is_none(o)) {
-			Option_drop(o);
-			VecIter_drop(iter);
-			break;
-		}
-
+	Vec_foreach(iter, usize) {
 		value = Cast(usize *, Option_unwrap(o));
 		info("VecIter_next(%lu)", *value);
-		Option_drop(o);
-	} while (true);
+	};
+	VecIter_drop(iter);
 
 	info("* TEST: ITERATOR");
 	info("  * Iterating over Vec...");
 	iter = VecIter_To(VecIter_From(Vec_IntoIterator(v), 20), 90);
-	do {
-		o = VecIter_next(iter);
-		if (Option_is_none(o)) {
-			Option_drop(o);
-			VecIter_drop(iter);
-			break;
-		}
-
+	Vec_foreach(iter, usize) {
 		value = Cast(usize *, Option_unwrap(o));
 		*value *= 2;
 		Vec_set(v, VecIter_enumerate(iter), value);
 		info("Vec_set(%lu)", *value);
-		Option_drop(o);
-	} while (true);
+	};
+	VecIter_drop(iter);
 
 	iter = VecIter_To(VecIter_From(Vec_IntoIterator(v), 20), 90);
-	do {
-		o = VecIter_next(iter);
-		if (Option_is_none(o)) {
-			Option_drop(o);
-			VecIter_drop(iter);
-			break;
-		}
-
+	Vec_foreach(iter, usize) {
 		value = Cast(usize *, Option_unwrap(o));
 		info("VecIter_next(%lu)=%lu", VecIter_enumerate(iter), *value);
-		Option_drop(o);
-	} while (true);
+	};
+	VecIter_drop(iter);
 
 	value = Vec_remove(v, 1);
 	info("Vec_remove(1)=%lu", *value);
@@ -101,27 +80,16 @@ int main(void) {
 	info("Vec_remove(1)=%lu", *value);
 	mm_free(value);
 
-	let(zero, usize) = 0;
-	Vec_insert(v, 50, &zero);
-	Vec_insert(v, 52, &zero);
+	// let(zero, usize) = 0;
+	// Vec_insert(v, 50, &zero);
+	// Vec_insert(v, 52, &zero);
 
 	iter = Vec_IntoIterator(v);
-	VecIter_display(iter);
-	Vec_display(v);
-	do {
-		let(value, usize *);
-
-		o = VecIter_next(iter);
-		if (Option_is_none(o)) {
-			Option_drop(o);
-			VecIter_drop(iter);
-			break;
-		}
-
+	Vec_foreach(iter, usize) {
 		value = Cast(usize *, Option_unwrap(o));
 		info("VecIter_next(%lu)=%lu", VecIter_enumerate(iter), *value);
-		Option_drop(o);
-	} while (true);
+	};
+	VecIter_drop(iter);
 
 	Vec_drop(v);
 

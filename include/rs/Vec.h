@@ -52,3 +52,17 @@ void VecIter_drop(VecIter(T) iter);
 #define Vec_new(T, drop) Vec_create(sizeof(T), drop)
 
 #define Vec_with_capacity(T, capacity, drop) Vec_create_with_capacity(sizeof(T), capacity, drop)
+
+/** @macro Vec_foreach 
+ * @brief Foreach
+ * @param iter Iterator
+ * @param T Type
+ * 
+ * Generate a local variable Option(T) `o` for the current
+ * loop iteration and it contains the result of the iteration `None` or `Some(T)`
+ * 
+ * If you break the loop in the body of the `foreach`, `Option_drop(o)` should be called.
+ */
+#define Vec_foreach(iter, T) for (Option(T) o = VecIter_next(iter); \
+				  (Option_is_some(o) ? true : (Option_drop(o) != NULL)); \
+				  Option_drop(o), o = VecIter_next(iter))
