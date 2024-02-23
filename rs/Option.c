@@ -101,7 +101,7 @@ void * Option_drop(Option_t *o)
 
 	OPTION_NONE:
 		mm_free(o);
-		return NULL;
+		break;
 
 	OPTION_UNREACHABLE:
 		unreachable();
