@@ -33,6 +33,8 @@ struct VecIter_s {
 	usize current;
 	usize start;
 	usize end;
+	bool reverse;
+	bool over;
 
 	impl(Display);
 	impl(Iterator);
@@ -50,8 +52,8 @@ static Result(usize, int) _VecIter_fmt(Ref(self))
 {
 	let(iter, VecIter_t *) = Cast(VecIter_t *, self);
 
-	return Ok(Result_new(), print("VecIter<%p, %lu, %lu, %lu>",
-				      iter->v, iter->start, iter->current, iter->end));
+	return Ok(Result_new(), print("VecIter<%p, %lu, %lu, %lu, %s>",
+				      iter->v, iter->start, iter->current, iter->end, iter->reverse ? "reverse" : "forward"));
 }
 
 static Option(void *) _VecIter_next(Ref(self))
@@ -60,11 +62,30 @@ static Option(void *) _VecIter_next(Ref(self))
 
 	if (!iter)
 		return None(Option_new());
-
-	if (iter->current > iter->end)
+	
+	if (iter->current < iter->start || iter->current > iter->end)
 		return None(Option_new());
 
-	return Some(Option_new(), Vec_peek(iter->v, iter->current++));
+	if (!iter->reverse)
+		return Some(Option_new(), Vec_peek(iter->v, iter->current++));
+	else
+		return Some(Option_new(), Vec_peek(iter->v, iter->current--));
+}
+
+static Ref() _VecIter_rev(Ref(self))
+{
+	let(iter, VecIter(T)) = Cast(VecIter_t *, self);
+
+	if (!iter)
+		return NULL;
+
+	iter->reverse = !iter->reverse;
+	if (iter->reverse)
+		iter->current = iter->end;
+	else
+		iter->current = iter->start;
+
+	return self;
 }
 
 static usize _VecIter_enumerate(Ref(self))
@@ -73,6 +94,9 @@ static usize _VecIter_enumerate(Ref(self))
 
 	if (!iter)
 		return 0;
+
+	if (iter->reverse)
+		return iter->current + 1;
 
 	return iter->current - 1;
 }
@@ -363,6 +387,7 @@ VecIter(T) Vec_IntoIterator(Vec(T) v)
 	iter->instance(Display).fmt = _VecIter_fmt;
 	iter->instance(Iterator).next = _VecIter_next;
 	iter->instance(Iterator).enumerate = _VecIter_enumerate;
+	iter->instance(Iterator).rev = _VecIter_rev;
 
 	return VecIter_To(iter, v->len);
 }
@@ -393,6 +418,11 @@ VecIter(T) VecIter_To(VecIter(T) iter, usize to)
 	iter->end = to - 1;
 
 	return iter;
+}
+
+VecIter(T) VecIter_rev(VecIter(T) iter)
+{
+	return iter->instance(Iterator).rev(Deref(iter));
 }
 
 Option(void *) VecIter_next(VecIter(T) iter)

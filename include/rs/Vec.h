@@ -47,6 +47,8 @@ Option(void *) VecIter_next(VecIter(T) iter);
 
 usize VecIter_enumerate(VecIter(T) iter);
 
+VecIter(T) VecIter_rev(VecIter(T) iter);
+
 void VecIter_drop(VecIter(T) iter);
 
 #define Vec_new(T, drop) Vec_create(sizeof(T), drop)

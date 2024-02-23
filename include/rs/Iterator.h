@@ -8,6 +8,7 @@
 #include <rs/Types.h>
 
 trait(Iterator) {
-	Option(T) (*next)(void *self);
-	usize (*enumerate)(void *self);
+	Option(T) (*next)(Ref(self));
+	usize (*enumerate)(Ref(self));
+	Ref() (*rev)(Ref(self));
 };

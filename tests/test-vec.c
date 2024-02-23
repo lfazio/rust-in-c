@@ -80,11 +80,12 @@ int main(void) {
 	info("Vec_remove(1)=%lu", *value);
 	mm_free(value);
 
-	// let(zero, usize) = 0;
-	// Vec_insert(v, 50, &zero);
-	// Vec_insert(v, 52, &zero);
+	let(zero, usize) = 0;
+	Vec_insert(v, 50, &zero);
+	Vec_insert(v, 52, &zero);
 
-	iter = Vec_IntoIterator(v);
+	//iter = Vec_IntoIterator(v);
+	iter = VecIter_rev(Vec_IntoIterator(v));
 	Vec_foreach(iter, usize) {
 		value = Cast(usize *, Option_unwrap(o));
 		info("VecIter_next(%lu)=%lu", VecIter_enumerate(iter), *value);
