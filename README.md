@@ -3,17 +3,21 @@ Rust-like Struct for C development
 
 This is just a project for fun.
 
-# Rust-like structures
+# Rust-like structures for C development
 
 It is a mimic of structures used in the [Rust language](https://www.rust-lang.org).
 I've found them useful and practical for C development. This can be improved with 
 other structures used in `rust`.
 
-It is plain `c11`.
+It is clearly a `try for fun` to mimic another language.
+
+
+> It is plain `c11`.
+
 
 ## Option
 
-This structure is used in the [Rust language](https://www.rust-lang.org) and allows to return Some or None values.
+`Option` is used in the [Rust language](https://www.rust-lang.org) and allows to return Some or None values.
 
 ```c
 #include <rs/Rust.h>
@@ -53,7 +57,7 @@ The interface is defined in [`Option.h`](include/rs/Option.h) and an example can
 
 ## Result
 
-This structure is used in the [Rust language](https://www.rust-lang.org) and allows to return good values `Ok()` or erroneous values `Err()`.
+`Result` is used in the [Rust language](https://www.rust-lang.org) and allows to return good values `Ok()` or erroneous values `Err()`.
 
 ```c
 #include <rs/Rust.h>
@@ -91,24 +95,30 @@ The types in the `Result(type_ok, type_err)` Result type construct are used to r
 
 The interface is defined in [`Result.h`](include/rs/Result.h) and an example can be found in [`tests/test-result.c`](tests/test-result.c).
 
-
 ## Box
 
-Box is used in the [Rust language](https://www.rust-lang.org) and allows to allocate memory on the heap.
+`Box` is used in the [Rust language](https://www.rust-lang.org) and allows to allocate memory on the heap.
 
 The interface is defined in [`Box.h`](include/rs/Box.h) and an example can be found in [`tests/test-box.c`](tests/test-box.c).
 
 ## Rc
 
-Rc is used in the [Rust language](https://www.rust-lang.org) and allows to reference counted objects.
+`Rc` is used in the [Rust language](https://www.rust-lang.org) and allows to reference counted objects.
 
 The interface is defined in [`Rc.h`](include/rs/Rc.h) and an example can be found in [`tests/test-rc.c`](tests/test-rc.c).
 
 ## Trait
 
-Traits are similar to interfaces in other languages.
+`Trait`s are similar to interfaces in other languages.
 
 The interface is defined in [`Trait.h`](include/rs/Trait.h) and an example can be found in [`tests/test-trait.c`](tests/test-trait.c).
+
+## Vec
+
+`Vec` is used in the [Rust language](https://www.rust-lang.org). `Vec` is a stack-like data structure. It allows to push/pop elements from the stack.
+It has been improved with insert/remove operations and can be parsed through iterators `VecIter`.
+
+The interface is defined in [`Vec.h`](include/rs/Vec.h) and an example can be found in [`tests/test-vec.c`](tests/test-vec.c).
 
 
 ## Build
