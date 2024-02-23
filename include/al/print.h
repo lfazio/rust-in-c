@@ -3,6 +3,7 @@
 
 #pragma once
 
+#include <inttypes.h>
 #include <stdbool.h>
 #include <stdio.h>
 
@@ -57,9 +58,9 @@
 			println("<D> [%s:%d] " #var " = %" fmt "", __FILE__, __LINE__, var); \
 	} while (0)
 
-#define dbguint(var) dbgvar_fmt(##var, PRIuMAX)
-#define dbgsint(var) dbgvar_fmt(##var, PRIdMAX)
-#define dbgxint(var) dbgvar_fmt(##var, PRIxMAX)
+#define dbguint(var) dbgvar_fmt(var, PRIuMAX)
+#define dbgsint(var) dbgvar_fmt(var, PRIdMAX)
+#define dbgxint(var) dbgvar_fmt(var, PRIxMAX)
 
 #define dbg(fmt, ...) do { \
 		if (DBG) \
