@@ -16,9 +16,13 @@ test-box.clean: $(addprefix lib,$(addsuffix .clean,$(test-box-lib-y)))
 .PHONY: test-box.distclean
 test-box.distclean: test-box.clean $(addprefix lib,$(addsuffix .clean,$(test-box-lib-y)))
 	@echo CLEAN $(basename $@)
-	$(Q)$(RM) -f $(O)/$(test-box-elf-y)).elf
+	$(Q)$(RM) -f $(O)/$(test-box-elf-y)
 
 all:: $(O)/$(test-box-elf-y)
+
+clean:: test-box.clean
+
+distclean:: test-box.distclean
 
 ###
 # test-option
@@ -35,9 +39,13 @@ test-option.clean: $(addprefix lib,$(addsuffix .clean,$(test-option-lib-y)))
 .PHONY: test-option.distclean
 test-option.distclean: test-option.clean $(addprefix lib,$(addsuffix .distclean,$(test-option-lib-y)))
 	@echo CLEAN $(basename $@)
-	$(Q)$(RM) -f $(O)/$(test-option-elf-y)).elf
+	$(Q)$(RM) -f $(O)/$(test-option-elf-y)
 
 all:: $(O)/$(test-option-elf-y)
+
+clean:: test-option.clean
+
+distclean:: test-option.distclean
 
 ###
 # test-rc
@@ -53,10 +61,14 @@ test-rc.clean: $(addprefix lib,$(addsuffix .clean,$(test-rc-lib-y)))
 
 .PHONY: test-rc.distclean
 test-rc.distclean: test-rc.clean $(addprefix lib,$(addsuffix .clean,$(test-rc-lib-y)))
-	@echo CLEAN $(basename $@)
-	$(Q)$(RM) -f $(O)/$(test-rc-elf-y)).elf
+	@echo DISTCLEAN $(basename $@)
+	$(Q)$(RM) -f $(O)/$(test-rc-elf-y)
 
 all:: $(O)/$(test-rc-elf-y)
+
+clean:: test-rc.clean
+
+distclean:: test-rc.distclean
 
 ###
 # test-result
@@ -72,10 +84,14 @@ test-result.clean: $(addprefix lib,$(addsuffix .clean,$(test-result-lib-y)))
 
 .PHONY: test-result.distclean
 test-result.distclean: test-result.clean $(addprefix lib,$(addsuffix .clean,$(test-result-lib-y)))
-	@echo CLEAN $(basename $@)
-	$(Q)$(RM) -f $(O)/$(test-result-elf-y)).elf
+	@echo DISTCLEAN $(basename $@)
+	$(Q)$(RM) -f $(O)/$(test-result-elf-y)
 
 all:: $(O)/$(test-result-elf-y)
+
+clean:: test-result.clean
+
+distclean:: test-result.distclean
 
 ###
 # test-trait
@@ -91,10 +107,14 @@ test-trait.clean: $(addprefix lib,$(addsuffix .clean,$(test-trait-lib-y)))
 
 .PHONY: test-trait.distclean
 test-trait.distclean: test-trait.clean $(addprefix lib,$(addsuffix .clean,$(test-trait-lib-y)))
-	@echo CLEAN $(basename $@)
-	$(Q)$(RM) -f $(O)/$(test-trait-elf-y)).elf
+	@echo DISTCLEAN $(basename $@)
+	$(Q)$(RM) -f $(O)/$(test-trait-elf-y)
 
 all:: $(O)/$(test-trait-elf-y)
+
+clean:: test-trait.clean
+
+distclean:: test-trait.distclean
 
 ###
 # test-vec
@@ -109,8 +129,12 @@ test-vec.clean: $(addprefix lib,$(addsuffix .clean,$(test-vec-lib-y)))
 	$(Q)$(RM) -f $(addprefix $(O)/,$($(basename $@)-obj-y))
 
 .PHONY: test-vec.distclean
-test-vec.distclean: test-trait.clean $(addprefix lib,$(addsuffix .clean,$(test-vec-lib-y)))
-	@echo CLEAN $(basename $@)
-	$(Q)$(RM) -f $(O)/$(test-vec-elf-y)).elf
+test-vec.distclean: test-vec.clean $(addprefix lib,$(addsuffix .clean,$(test-vec-lib-y)))
+	@echo DISTCLEAN $(basename $@)
+	$(Q)$(RM) -f $(O)/$(test-vec-elf-y)
 
 all:: $(O)/$(test-vec-elf-y)
+
+clean:: test-vec.clean
+
+distclean:: test-vec.distclean

@@ -22,6 +22,14 @@ CFLAGS += -std=c11 $(PRINT_FLAGS)
 .PHONY: all
 all::
 
+.PHONY: clean
+clean::
+	@echo CLEAN
+
+.PHONY: distclean
+distclean::
+	@echo DISTCLEAN
+
 include BUILD.mk
 
 $(O)/%.elf: %-obj %-lib
@@ -42,15 +50,6 @@ lib%: $(O)/lib%.a
 $(O)/%.a: %-obj
 	@echo AR $(notdir $@)
 	$(Q)$(AR) rcs $@ $(addprefix $(O)/,$($<-y))
-
-.PHONY: clean
-clean: $(addsuffix .clean,$(bin-y))
-
-.PHONY: distclean
-distclean: $(addsuffix .distclean,$(bin-y))
-
-.PHONY: $(addsuffix .clean,$(bin-y))
-.PHONY: $(addsuffix .distclean,$(bin-y))
 
 .SECONDEXPANSION:
 

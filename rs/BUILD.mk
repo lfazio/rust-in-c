@@ -16,3 +16,4 @@ librs.clean:
 librs.distclean: librs.clean
 	@echo CLEAN librs
 	$(Q)$(RM) -f $(O)/librs.a
+
