@@ -3,11 +3,6 @@
 
 TOP := $(shell pwd)
 
-# Configure trace level: WARN, INFO, DBG
-cflags-print += -DWARN=1
-cflags-print += -DINFO=1
-cflags-print += -DDBG=1
-
 # Include default values
 include scripts/default.mk
 
