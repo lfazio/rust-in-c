@@ -3,6 +3,9 @@
 
 TOP := $(shell pwd)
 
+# Include config if available
+-include defconfig.mk
+
 # Include default values
 include scripts/default.mk
 

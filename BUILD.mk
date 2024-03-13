@@ -6,20 +6,28 @@ cflags-print += -DWARN=1
 cflags-print += -DINFO=1
 cflags-print += -DDBG=1
 
+cflags-o += -Oz
+cflags-debug += -g -ggdb
+
 # Customise your build here
-cflags += -std=c11 -Wall -Wextra 
-cflags += -Oz
-cflags += -g
-cflags += $(cflags-print)
+cflags-y += -std=gnu11 -Wall -Wextra 
+cflags-y += $(cflags-o)
+cflags-y += $(cflags-debug)
+cflags-y += $(cflags-print)
 
 # Include flags
-iflags += -Iinclude
+iflags-y += -Iinclude
 
 # Preprocessor flags
-cppflags +=
+cppflags-y +=
 
 # Linker flags
-ldflags += -g
+ldflags-y += $(cflags-debug)
+
+# Build the C Symbol reflection lib
+ifeq ($(CONFIG_CSYM),y) 
+include csym/BUILD.mk
+endif
 
 # Build the lib
 include rs/BUILD.mk
