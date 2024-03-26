@@ -24,6 +24,9 @@ cppflags-y +=
 # Linker flags
 ldflags-y += $(cflags-debug)
 
+# Build the Abstraction Layer
+include include/al/BUILD.mk
+
 # Build the C Symbol reflection lib
 ifeq ($(CONFIG_CSYM),y) 
 include csym/BUILD.mk

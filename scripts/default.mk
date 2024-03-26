@@ -5,9 +5,13 @@ include scripts/config.mk
 include scripts/toolchain.mk
 
 RM := rm
+INSTALL := install
 
 .PHONY: all
 all::
+
+.PHONY: install
+install::
 
 .PHONY: clean
 clean::

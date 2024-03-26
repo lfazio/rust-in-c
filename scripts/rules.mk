@@ -30,6 +30,11 @@ $(O)/%.a: %-obj
 	@echo AR $(notdir $@)
 	$(Q)$(AR) rcs $@ $(addprefix $(O)/,$($<-y))
 
+lib%.install:: $(O)/lib%.a
+	@echo INSTALL lib$*
+	@mkdir -p $(PREFIX)/lib
+	$(Q)$(INSTALL) -m 664 -p -D $(O)/lib$*.a $(PREFIX)/lib/lib$*.a
+
 lib%.clean:
 	@echo CLEAN lib$*
 	$(Q)$(RM) -f $(addprefix $(O)/,$(lib$*-obj-y))

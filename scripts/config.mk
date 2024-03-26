@@ -11,3 +11,4 @@ endif
 
 # Build directory
 O ?= build
+PREFIX ?= usr/local

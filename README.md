@@ -144,6 +144,15 @@ make distclean
 The makefile is easily twekable so you can use it to build your own projects or just
 to prototype with it in your own example.
 
+## Install
+
+By default `PREFIX` is set to `/usr/local`. If you want to install it somewhere else,
+you can use the `PREFIX` variable.
+
+```sh
+make install PREFIX=usr/local # will install in $(PWD)/usr/local
+```
+
 # LICENCE
 
 The licence of this project is Apache 2.0. See the [LICENCE file](LICENCE) for more details.
