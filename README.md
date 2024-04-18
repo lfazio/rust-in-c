@@ -103,9 +103,15 @@ The interface is defined in [`Box.h`](include/rs/Box.h) and an example can be fo
 
 ## Rc
 
-`Rc` is used in the [Rust language](https://www.rust-lang.org) and allows to reference counted objects.
+`Rc` is used in the [Rust language](https://www.rust-lang.org) and allows to reference counted objects, not thread safe.
 
 The interface is defined in [`Rc.h`](include/rs/Rc.h) and an example can be found in [`tests/test-rc.c`](tests/test-rc.c).
+
+## Arc
+
+`Arc` is used in the [Rust language](https://www.rust-lang.org) and allows to reference counted objects, not thread safe.
+
+The interface is defined in [`Arc.h`](include/rs/Arc.h) and an example can be found in [`tests/test-arc.c`](tests/test-arc.c).
 
 ## Trait
 

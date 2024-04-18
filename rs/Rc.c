@@ -2,7 +2,6 @@
 // SPDX-FileCopyrightText: 2024 Laurent Fazio <laurent.fazio@gmail.com>
 
 #include <errno.h>
-#include <stdatomic.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +13,8 @@
 #include <rs/Rust.h>
 
 struct Rc_s {
-	atomic_size_t refc;
-	atomic_bool lock;
+	size_t refc;
+	bool lock;
 
 	Ref(ref);
 	void (*free)(void *ref);
@@ -38,8 +37,8 @@ static Rc_t * _Rc_default(Rc_t *rc, Ref(ptr), void (*free)(Ref(ref)))
 	if (!rc)
 		return NULL;
 
-	atomic_init(&rc->refc, 1);
-	atomic_init(&rc->lock, 0);
+	rc->refc = 1;
+	rc->lock = 0;
 	rc->instance(Display).fmt = _Rc_fmt;
 	rc->free = free;
 	rc->ref = ptr;
@@ -63,19 +62,17 @@ Rc_t * Rc_clone(Rc_t *rc)
 	if (!rc)
 		return NULL;
 
-	atomic_fetch_add(&rc->refc, 1);
+	rc->refc += 1;
 
 	return rc;
 }
 
 int Rc_lock(Rc_t *rc)
 {
-	let(expected, bool) = false;
-
 	if (!rc)
 		return -EINVAL;
 
-	while (!atomic_compare_exchange_strong(&rc->lock, &expected, 1));
+	while (rc->lock == 1);
 
 	return 0;
 }
@@ -87,7 +84,10 @@ int Rc_unlock(Rc_t *rc)
 	if (!rc)
 		return -EINVAL;
 
-	return atomic_compare_exchange_strong(&rc->lock, &expected, 0);
+	expected = rc->lock == 1;
+	rc->lock = 0;
+
+	return expected;
 }
 
 void * Rc_ref(Rc_t *rc)
@@ -103,7 +103,7 @@ usize Rc_strong_count(Rc_t *rc)
 	if (!rc)
 		return 0;
 
-	return atomic_load(&rc->refc);
+	return rc->refc;
 }
 
 void Rc_drop(Rc_t *rc)
@@ -111,7 +111,8 @@ void Rc_drop(Rc_t *rc)
 	if (!rc)
 		return;
 
-	if (atomic_fetch_sub(&rc->refc, 1) - 1 == 0) {
+	rc->refc -= 1;
+	if (!rc->refc) {
 		Rc_lock(rc);
 
 		if (rc->free)

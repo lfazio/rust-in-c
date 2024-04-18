@@ -21,6 +21,19 @@ test-%.distclean: test-%.clean $(addprefix lib,$(addsuffix .clean,$(test-%-lib-y
 	$(Q)$(RM) -f $(O)/$(test-$*-elf-y)
 
 ###
+# test-arc
+###
+test-arc-elf-y += test-arc.elf
+test-arc-obj-y += tests/test-arc.o
+test-arc-lib-y += rs csym
+
+test-arc.build: $(O)/$(test-arc-elf-y)
+all:: test-arc.build
+install:: test-arc.install
+clean:: test-arc.clean
+distclean:: test-arc.distclean
+
+###
 # test-box
 ###
 test-box-elf-y += test-box.elf

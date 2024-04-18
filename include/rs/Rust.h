@@ -5,6 +5,7 @@
 
 #include <rs/Types.h>
 
+#include <rs/Arc.h>
 #include <rs/Box.h>
 #include <rs/Iterator.h>
 #include <rs/Rc.h>
