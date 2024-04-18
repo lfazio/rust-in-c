@@ -5,18 +5,20 @@ $(O)/%.elf: %-obj %-lib
 	@echo LD $(notdir $@)
 	@mkdir -p $(dir $@)
 	$(Q)$(CC) $(ldflags-y) -o $@ $(addprefix $(O)/,$($*-obj-y)) -L$(O) $(addprefix -l,$($*-lib-y))
+ifeq ($(CONFIG_CSYM),y)
 ifeq ($(CONFIG_CSYM_SYMBOLS),y)
 	$(Q)$(NM) -nS $@ | awk 'BEGIN{ print "#include <stdio.h>"; print "#include <csym/reflect.h>"; print "struct sym_table_t gbl_sym_table[]={" } { if((NF==4) && (($$3=="t") || ($$3=="T"))){print "\t{ .addr = (void*)0x" $$1 ", .size = 0x" $$2 ", .name = \"" $$4 "\"},"}} END{print "\t{NULL, 0, NULL},\n};"}' > $(O)/.symbols.$*.real.c
 	$(Q)$(CC) -c $(cflags-y) $(iflags-y) -o $(O)/.symbols.$*.real.o $(O)/.symbols.$*.real.c
-	$(Q)$(CC) $(ldflags-y) -o $@ $(O)/.symbols.$*.real.o $(addprefix $(O)/,$($*-obj-y)) -L$(O) $(addprefix -l,$($*-lib-y))
+	$(Q)$(CC) $(ldflags-y) -o $@ $(O)/.symbols.$*.real.o $(addprefix $(O)/,$($*-obj-y)) -L$(LIBDIR) $(addprefix -l,$($*-lib-y))
 
 	$(Q)$(NM) -nS $@ | awk 'BEGIN{ print "#include <stdio.h>"; print "#include <csym/reflect.h>"; print "struct sym_table_t gbl_sym_table[]={" } { if((NF==4) && (($$3=="t") || ($$3=="T"))){print "\t{ .addr = (void*)0x" $$1 ", .size = 0x" $$2 ", .name = \"" $$4 "\"},"}} END{print "\t{NULL, 0, NULL},\n};"}' > $(O)/.symbols.$*.real.c
 	$(Q)$(CC) -c $(cflags-y) $(iflags-y) -o $(O)/.symbols.$*.real.o $(O)/.symbols.$*.real.c
 
-	$(Q)$(CC) $(ldflags-y) -o $@ $(O)/.symbols.$*.real.o $(addprefix $(O)/,$($*-obj-y)) -L$(O) $(addprefix -l,$($*-lib-y))
-endif
+	$(Q)$(CC) $(ldflags-y) -o $@ $(O)/.symbols.$*.real.o $(addprefix $(O)/,$($*-obj-y)) -L$(LIBDIR) $(addprefix -l,$($*-lib-y))
+endif # CONFIG_CSYM_SYMBOLS
+endif # CONFIG_CSYM
 	@echo SIZE $(notdir $@)
-	$(SIZE) $@
+	$(Q)$(SIZE) $@
 	@echo ELF $@
 
 $(O)/%.o: %.c defconfig.mk

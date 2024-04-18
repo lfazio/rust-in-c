@@ -126,22 +126,22 @@ The interface is defined in [`Vec.h`](include/rs/Vec.h) and an example can be fo
 Just run the following command to build librs.a and also the examples.
 
 ```sh
-make
+make [CROSS_COMPILE=triplet-]
 ```
 
 In order to clean intermediate files:
 
 ```sh
-make clean
+make clean [CROSS_COMPILE=triplet-]
 ```
 
 And in order to clean all generated files:
 
 ```sh
-make distclean
+make distclean [CROSS_COMPILE=triplet-]
 ```
 
-The makefile is easily twekable so you can use it to build your own projects or just
+The makefile is easily tweakable so you can use it to build your own projects or just
 to prototype with it in your own example.
 
 ## Install
@@ -150,7 +150,8 @@ By default `PREFIX` is set to `/usr/local`. If you want to install it somewhere 
 you can use the `PREFIX` variable.
 
 ```sh
-make install PREFIX=usr/local # will install in $(PWD)/usr/local
+# will install in $(PWD)/usr/local
+make install PREFIX=usr/local [CROSS_COMPILE=triplet-]
 ```
 
 # LICENCE
