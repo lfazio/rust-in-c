@@ -3,9 +3,10 @@
 
 #pragma once
 
-#include <rs/Option.h>
-#include <rs/Trait.h>
 #include <rs/Types.h>
+
+#include <rs/std/Option.h>
+#include <rs/std/Trait.h>
 
 trait(Iterator) {
 	Option(T) (*next)(Ref(self));

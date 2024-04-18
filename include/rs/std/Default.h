@@ -3,8 +3,8 @@
 
 #pragma once
 
-#include <rs/Trait.h>
 #include <rs/Types.h>
+#include <rs/std/Trait.h>
 
 trait(Default) {
 	void * (*Default)(Ref(self));

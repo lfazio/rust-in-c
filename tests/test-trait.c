@@ -5,8 +5,6 @@
 #include <al/print.h>
 
 #include <rs/Rust.h>
-#include <rs/std/Default.h>
-#include <rs/std/fmt/Display.h>
 
 trait(myapi) {
 	Option(usize) (*sum)(void *self, usize n);

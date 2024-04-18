@@ -4,7 +4,6 @@
 #include <al/print.h>
 
 #include <rs/Rust.h>
-#include <rs/std/fmt/Display.h>
 
 Option(usize) sum(usize n)
 {

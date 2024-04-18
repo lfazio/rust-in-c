@@ -3,8 +3,9 @@
 
 #pragma once
 
-#include <rs/Result.h>
-#include <rs/Trait.h>
+#include <rs/Types.h>
+#include <rs/std/Result.h>
+#include <rs/std/Trait.h>
 
 trait(Display) {
 	Result(usize, int) (*fmt)(Ref(self));

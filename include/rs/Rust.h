@@ -5,16 +5,15 @@
 
 #include <rs/Types.h>
 
-#include <rs/Arc.h>
-#include <rs/Box.h>
-#include <rs/Iterator.h>
-#include <rs/Rc.h>
-#include <rs/Result.h>
-#include <rs/Option.h>
-#include <rs/Trait.h>
-#include <rs/Vec.h>
-
+#include <rs/std/Arc.h>
+#include <rs/std/Box.h>
 #include <rs/std/Default.h>
+#include <rs/std/Iterator.h>
+#include <rs/std/Rc.h>
+#include <rs/std/Result.h>
+#include <rs/std/Option.h>
+#include <rs/std/Trait.h>
+#include <rs/std/Vec.h>
 #include <rs/std/fmt/Display.h>
 
 #define let(name, type) type name

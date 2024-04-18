@@ -5,9 +5,9 @@
 
 #include <stddef.h>
 
-#include <rs/Option.h>
-#include <rs/Result.h>
 #include <rs/Types.h>
+#include <rs/std/Option.h>
+#include <rs/std/Result.h>
 
 typedef struct Vec_s Vec_t;
 typedef struct VecIter_s VecIter_t;

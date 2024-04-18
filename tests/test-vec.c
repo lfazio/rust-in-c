@@ -5,7 +5,6 @@
 #include <al/print.h>
 
 #include <rs/Rust.h>
-#include <rs/std/fmt/Display.h>
 
 int main(void) {
 	Option(usize) o;

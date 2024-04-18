@@ -53,7 +53,7 @@ int main(void) {
 
 The type in the `Option(type)` option type construct is used to recall the user the type stored inside. This is not used by the Option(type) macro.
 
-The interface is defined in [`Option.h`](include/rs/Option.h) and an example can be found in [`tests/test-option.c`](tests/test-option.c).
+The interface is defined in [`Option.h`](include/rs/std/Option.h) and an example can be found in [`tests/test-option.c`](tests/test-option.c).
 
 ## Result
 
@@ -93,19 +93,19 @@ int main(void) {
 
 The types in the `Result(type_ok, type_err)` Result type construct are used to recall the user the types stored inside. They are not used by the Result(type_ok, type_err) macro.
 
-The interface is defined in [`Result.h`](include/rs/Result.h) and an example can be found in [`tests/test-result.c`](tests/test-result.c).
+The interface is defined in [`Result.h`](include/rs/std/Result.h) and an example can be found in [`tests/test-result.c`](tests/test-result.c).
 
 ## Box
 
 `Box` is used in the [Rust language](https://www.rust-lang.org) and allows to allocate memory on the heap.
 
-The interface is defined in [`Box.h`](include/rs/Box.h) and an example can be found in [`tests/test-box.c`](tests/test-box.c).
+The interface is defined in [`Box.h`](include/rs/std/Box.h) and an example can be found in [`tests/test-box.c`](tests/test-box.c).
 
 ## Rc
 
 `Rc` is used in the [Rust language](https://www.rust-lang.org) and allows to reference counted objects, not thread safe.
 
-The interface is defined in [`Rc.h`](include/rs/Rc.h) and an example can be found in [`tests/test-rc.c`](tests/test-rc.c).
+The interface is defined in [`Rc.h`](include/rs/std/Rc.h) and an example can be found in [`tests/test-rc.c`](tests/test-rc.c).
 
 ## Arc
 
@@ -117,14 +117,14 @@ The interface is defined in [`Arc.h`](include/rs/Arc.h) and an example can be fo
 
 `Trait`s are similar to interfaces in other languages.
 
-The interface is defined in [`Trait.h`](include/rs/Trait.h) and an example can be found in [`tests/test-trait.c`](tests/test-trait.c).
+The interface is defined in [`Trait.h`](include/rs/std/Trait.h) and an example can be found in [`tests/test-trait.c`](tests/test-trait.c).
 
 ## Vec
 
 `Vec` is used in the [Rust language](https://www.rust-lang.org). `Vec` is a stack-like data structure. It allows to push/pop elements from the stack.
 It has been improved with insert/remove operations and can be parsed through iterators `VecIter`.
 
-The interface is defined in [`Vec.h`](include/rs/Vec.h) and an example can be found in [`tests/test-vec.c`](tests/test-vec.c).
+The interface is defined in [`Vec.h`](include/rs/std/Vec.h) and an example can be found in [`tests/test-vec.c`](tests/test-vec.c).
 
 
 ## Build
