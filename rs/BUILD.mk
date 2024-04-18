@@ -6,6 +6,7 @@ librs-obj-y += rs/std/Box.o
 librs-obj-y += rs/std/Option.o
 librs-obj-y += rs/std/Result.o
 librs-obj-y += rs/std/Rc.o
+librs-obj-y += rs/std/Thread.o
 librs-obj-y += rs/std/Vec.o
 
 librs.install:: $(O)/librs.a include/rs/*.h include/rs/std/*.h include/rs/std/fmt/*.h
@@ -19,6 +20,7 @@ librs.install:: $(O)/librs.a include/rs/*.h include/rs/std/*.h include/rs/std/fm
 	@install -m 644 -p include/rs/std/Option.h $(PREFIX)/include/rs/std
 	@install -m 644 -p include/rs/std/Rc.h $(PREFIX)/include/rs/std
 	@install -m 644 -p include/rs/std/Result.h $(PREFIX)/include/rs/std
+	@install -m 644 -p include/rs/std/Thread.h $(PREFIX)/include/rs/std
 	@install -m 644 -p include/rs/std/Trait.h $(PREFIX)/include/rs/std
 	@install -m 644 -p include/rs/std/Vec.h $(PREFIX)/include/rs/std
 	@install -m 644 -p include/rs/Types.h $(PREFIX)/include/rs/std

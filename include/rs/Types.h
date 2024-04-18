@@ -7,6 +7,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <sys/types.h>
+#include <time.h>
 
 typedef enum {
 	TYPE_KIND_UNKNOWN,
@@ -42,3 +43,5 @@ typedef ssize_t isize;
 #define container_of(ptr, type, member) ({ \
                 const typeof( ((type *)0)->member ) *__mptr = (ptr); \
                 (type *)( (char *)__mptr - offsetof(type,member) ); })
+
+typedef struct timespec Duration;

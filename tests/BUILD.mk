@@ -86,6 +86,19 @@ clean:: test-result.clean
 distclean:: test-result.distclean
 
 ###
+# test-thread
+###
+test-thread-elf-y += test-thread.elf
+test-thread-obj-y += tests/test-thread.o
+test-thread-lib-y += rs csym
+
+test-thread.build: $(O)/$(test-thread-elf-y)
+all:: test-thread.build
+install:: test-thread.install
+clean:: test-thread.clean
+distclean:: test-thread.distclean
+
+###
 # test-trait
 ###
 test-trait-elf-y += test-trait.elf

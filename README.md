@@ -111,7 +111,13 @@ The interface is defined in [`Rc.h`](include/rs/std/Rc.h) and an example can be 
 
 `Arc` is used in the [Rust language](https://www.rust-lang.org) and allows to reference counted objects, not thread safe.
 
-The interface is defined in [`Arc.h`](include/rs/Arc.h) and an example can be found in [`tests/test-arc.c`](tests/test-arc.c).
+The interface is defined in [`Arc.h`](include/rs/std/Arc.h) and an example can be found in [`tests/test-arc.c`](tests/test-arc.c).
+
+## Thread
+
+`Thread`s are similar to interfaces in other languages.
+
+The interface is defined in [`Thread.h`](include/rs/std/Thread.h) and an example can be found in [`tests/test-thread.c`](tests/test-thread.c).
 
 ## Trait
 
